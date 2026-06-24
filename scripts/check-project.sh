@@ -37,7 +37,7 @@ required_files=(
   "docs/runner/labels.md"
   ".vscode/settings.json"
   ".github/workflows/github-hosted-runner.yml"
-  ".github/workflows/self-hosted-check.yml"
+  ".github/workflows/self-hosted-runner.yml"
   ".github/workflows/safe-diagnostics.yml"
   ".github/workflows/docker-self-hosted.yml"
 )

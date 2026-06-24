@@ -5,7 +5,9 @@
     <a href="https://github.com/brodyandre/github-actions-self-hosted-runner-lab/actions/workflows/github-hosted-runner.yml">
       <img alt="Workflow GitHub-hosted runner" src="https://github.com/brodyandre/github-actions-self-hosted-runner-lab/actions/workflows/github-hosted-runner.yml/badge.svg" />
     </a>
-    <img alt="Self-hosted placeholder" src="https://img.shields.io/badge/Self--hosted-placeholder-lightgrey?logo=githubactions" />
+    <a href="https://github.com/brodyandre/github-actions-self-hosted-runner-lab/actions/workflows/self-hosted-runner.yml">
+      <img alt="Workflow Self-hosted runner" src="https://github.com/brodyandre/github-actions-self-hosted-runner-lab/actions/workflows/self-hosted-runner.yml/badge.svg" />
+    </a>
     <img alt="Diagnostics placeholder" src="https://img.shields.io/badge/Diagnostics-placeholder-lightgrey?logo=githubactions" />
     <img alt="Docker placeholder" src="https://img.shields.io/badge/Docker-placeholder-lightgrey?logo=docker" />
   </p>
@@ -63,7 +65,7 @@ Demonstrar, de forma prática, os seguintes pontos:
 GitHub Repository
 ├── Workflow 1: github-hosted-runner
 │   └── Runner: ubuntu-latest
-├── Workflow 2: self-hosted-check
+├── Workflow 2: self-hosted-runner
 │   └── Runner: self-hosted (WSL2 / Windows 11)
 ├── Workflow 3: safe-diagnostics
 │   └── Runner: self-hosted (WSL2 / Windows 11)
@@ -104,7 +106,7 @@ Aplicação demonstrada
 │       ├── docker-self-hosted.yml
 │       ├── github-hosted-runner.yml
 │       ├── safe-diagnostics.yml
-│       └── self-hosted-check.yml
+│       └── self-hosted-runner.yml
 ├── .gitignore
 ├── .nvmrc
 ├── .vscode/
@@ -228,7 +230,15 @@ Ponto preparado para print:
 <a id="self-hosted-runner"></a>
 ## Self-hosted runner
 
-O workflow [`self-hosted-check.yml`](.github/workflows/self-hosted-check.yml) foi preparado para execução manual em um runner com labels `self-hosted`, `linux` e `x64`, executando a mesma validação da aplicação com estrutura, lint e testes. A configuração recomendada está documentada em [docs/setup-self-hosted-runner.md](docs/setup-self-hosted-runner.md).
+O workflow [`self-hosted-runner.yml`](.github/workflows/self-hosted-runner.yml) foi preparado para execução manual em um runner com labels `self-hosted`, `linux`, `x64` e `wsl2`. Ele demonstra que o GitHub Actions pode direcionar um job para a sua máquina local no WSL2 usando labels compatíveis.
+
+Esse workflow:
+
+- roda somente por `workflow_dispatch`;
+- executa `npm install` e `npm test`;
+- roda `./scripts/safe-diagnostics.sh`;
+- gera `artifacts/self-hosted-report.txt`;
+- publica o relatório como artifact.
 
 Para evitar divergência de versão entre máquinas, esse workflow também instala `Node 20` com `actions/setup-node`.
 
@@ -242,6 +252,14 @@ Pontos preparados para print:
 - `docs/images/runner-settings.png`
 - `docs/images/self-hosted-runner-online.png`
 - `docs/images/self-hosted-workflow-success.png`
+
+Como executar manualmente:
+
+1. Confirme no GitHub se o runner está `Online`.
+2. Abra a aba `Actions` do repositório.
+3. Selecione o workflow `self-hosted-runner`.
+4. Clique em `Run workflow`.
+5. Acompanhe o job e, ao final, baixe o artifact `self-hosted-report`.
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -269,7 +287,7 @@ As labels recomendadas para o laboratório estão descritas em [docs/runner/labe
 Exemplo de uso em workflow:
 
 ```yaml
-runs-on: [self-hosted, linux, x64]
+runs-on: [self-hosted, linux, x64, wsl2]
 ```
 
 [⬆️ Retornar ao índice](#indice)

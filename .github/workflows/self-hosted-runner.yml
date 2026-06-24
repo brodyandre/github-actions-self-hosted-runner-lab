@@ -1,0 +1,91 @@
+name: self-hosted-runner
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-and-report:
+    # Este job depende de um runner self-hosted Online no GitHub
+    # e com labels compatíveis com o array definido em runs-on.
+    runs-on:
+      - self-hosted
+      - linux
+      - x64
+      - wsl2
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Preparar scripts
+        run: |
+          echo "::group::Permissões de execução"
+          chmod +x scripts/*.sh
+          echo "::endgroup::"
+
+      - name: Mostrar diretório atual
+        run: |
+          echo "::group::Diretório atual"
+          pwd
+          echo "::endgroup::"
+
+      - name: Mostrar versão do Node.js
+        run: |
+          echo "::group::Node.js"
+          node --version
+          echo "::endgroup::"
+
+      - name: Mostrar versão do NPM
+        run: |
+          echo "::group::NPM"
+          npm --version
+          echo "::endgroup::"
+
+      - name: Instalar dependências
+        run: |
+          echo "::group::Instalação"
+          npm install
+          echo "::endgroup::"
+
+      - name: Executar testes
+        run: |
+          echo "::group::Testes"
+          npm test
+          echo "::endgroup::"
+
+      - name: Executar diagnóstico seguro
+        run: |
+          echo "::group::Diagnóstico seguro"
+          ./scripts/safe-diagnostics.sh
+          echo "::endgroup::"
+
+      - name: Gerar relatório
+        run: |
+          echo "::group::Relatório"
+          mkdir -p artifacts
+          {
+            echo "Workflow: self-hosted-runner"
+            echo "Runner labels: self-hosted, linux, x64, wsl2"
+            echo "Node: $(node --version)"
+            echo "NPM: $(npm --version)"
+            echo "Data UTC: $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+            echo "Diretório: $(pwd)"
+            echo "Status: validação concluída com sucesso"
+          } > artifacts/self-hosted-report.txt
+          cat artifacts/self-hosted-report.txt
+          echo "::endgroup::"
+
+      - name: Upload do artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: self-hosted-report
+          path: artifacts/self-hosted-report.txt
+          if-no-files-found: error
