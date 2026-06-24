@@ -24,6 +24,7 @@
 - [Como validar endpoints](#como-validar-endpoints)
 - [GitHub-hosted runner](#github-hosted-runner)
 - [Self-hosted runner](#self-hosted-runner)
+- [Cuidados de segurança](#cuidados-de-seguranca)
 - [Labels de runner](#labels-de-runner)
 - [Diagnóstico seguro](#diagnostico-seguro)
 - [Docker no self-hosted runner](#docker-no-self-hosted-runner)
@@ -130,7 +131,7 @@ Aplicação demonstrada
 └── scripts/
     ├── check-project.sh
     ├── run-with-node20.sh
-    └── safe-diagnostics.sh
+    ├── safe-diagnostics.sh
     └── start-app.sh
 ```
 
@@ -146,7 +147,7 @@ Pré-requisito recomendado: `Node.js 20` ou superior.
 3. Execute `make install`.
 4. Execute `make check` para validar estrutura, lint e testes.
 5. Inicie a aplicação com `npm start` ou `make start`.
-5. Acesse os endpoints locais.
+6. Acesse os endpoints locais.
 
 A aplicação lê o arquivo `.env` automaticamente, sem dependências externas. Se o Node local estiver abaixo da versão esperada, os comandos `make install`, `make start` e `make test` usam Docker com `Node 20` como fallback.
 
@@ -244,10 +245,26 @@ Pontos preparados para print:
 
 [⬆️ Retornar ao índice](#indice)
 
+<a id="cuidados-de-seguranca"></a>
+## Cuidados de segurança
+
+Para este laboratório, o uso do `self-hosted runner` deve ser controlado.
+
+- Não versione tokens, credenciais ou arquivos internos do runner.
+- O token de registro do runner é temporário e deve ser copiado apenas da interface do GitHub.
+- Não grave o token em scripts, `.env` ou arquivos do repositório.
+- Prefira `workflow_dispatch` para jobs `self-hosted`.
+- Mantenha o runner fora da pasta do projeto.
+- Em repositórios públicos, tenha cuidado redobrado com jobs que usam shell, Docker ou acesso ao host.
+
+Mais detalhes em [docs/security-notes.md](docs/security-notes.md) e [docs/setup-self-hosted-runner.md](docs/setup-self-hosted-runner.md).
+
+[⬆️ Retornar ao índice](#indice)
+
 <a id="labels-de-runner"></a>
 ## Labels de runner
 
-As labels recomendadas para o laboratório estão descritas em [docs/runner/labels.md](docs/runner/labels.md). A ideia é manter labels simples, legíveis e alinhadas ao ambiente real do host.
+As labels recomendadas para o laboratório estão descritas em [docs/runner/labels.md](docs/runner/labels.md). Para este cenário, o conjunto recomendado é `self-hosted`, `linux`, `x64`, `wsl2` e `devops-lab`.
 
 Exemplo de uso em workflow:
 
@@ -260,7 +277,23 @@ runs-on: [self-hosted, linux, x64]
 <a id="diagnostico-seguro"></a>
 ## Diagnóstico seguro
 
-O script [`scripts/safe-diagnostics.sh`](scripts/safe-diagnostics.sh) coleta apenas informações operacionais básicas, como versões, ambiente e disponibilidade de ferramentas, sem imprimir variáveis de ambiente, tokens ou segredos.
+O script [`scripts/safe-diagnostics.sh`](scripts/safe-diagnostics.sh) imprime apenas informações seguras e objetivas:
+
+- `hostname`
+- `whoami`
+- `pwd`
+- `uname -a`
+- `node --version`
+- `npm --version`
+- `docker --version`, se existir
+- `git --version`
+- data e hora
+- `GITHUB_ACTIONS`
+- `RUNNER_OS`
+- `RUNNER_ARCH`
+- `RUNNER_NAME`
+
+O script não imprime `env` completo, `secrets`, tokens ou arquivos sensíveis.
 
 O workflow [`safe-diagnostics.yml`](.github/workflows/safe-diagnostics.yml) foi preparado para disparo manual no runner self-hosted.
 

@@ -1,37 +1,43 @@
 # Labels recomendadas para o runner
 
-## Conjunto mínimo
+## Labels recomendadas para este laboratório
 
-Para este laboratório, o conjunto mínimo recomendado é:
+Use o conjunto abaixo ao configurar o runner:
 
 - `self-hosted`
 - `linux`
 - `x64`
-
-## Labels opcionais
-
-Se quiser deixar o laboratório mais explícito, você pode adicionar:
-
 - `wsl2`
-- `windows11-host`
-- `docker`
+- `devops-lab`
 
-## Exemplo de uso
+## Motivo das labels
 
-Workflow mais compatível:
+- `self-hosted`: identifica que o job será executado fora do ambiente hospedado pelo GitHub.
+- `linux`: deixa explícito o sistema operacional usado no WSL2.
+- `x64`: indica a arquitetura do ambiente.
+- `wsl2`: diferencia esse runner de outras máquinas Linux.
+- `devops-lab`: cria um identificador simples para este laboratório.
+
+## Exemplo de uso em workflow
+
+Mais compatível:
 
 ```yaml
 runs-on: [self-hosted, linux, x64]
 ```
 
-Workflow mais específico:
+Mais específico para este laboratório:
 
 ```yaml
-runs-on: [self-hosted, linux, x64, wsl2, docker]
+runs-on: [self-hosted, linux, x64, wsl2, devops-lab]
 ```
+
+## Recomendação prática
+
+Para começar, você pode usar o workflow com as labels básicas e depois evoluir para o conjunto completo quando o ambiente estiver estável.
 
 ## Boas práticas
 
-- Evite excesso de labels sem necessidade.
-- Use nomes curtos e padronizados.
-- Revise as labels sempre que o ambiente mudar.
+- Use labels curtas, claras e padronizadas.
+- Evite labels demais sem ganho real de organização.
+- Revise as labels se o host, o sistema ou o objetivo do runner mudar.
