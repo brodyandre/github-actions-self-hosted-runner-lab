@@ -27,6 +27,7 @@
 - [🏗️ Arquitetura do laboratório](#arquitetura-do-laboratorio)
 - [🛠️ Stack utilizada](#stack-utilizada)
 - [🚀 Como rodar localmente](#como-rodar-localmente)
+- [🧪 Validação antes do push](#validacao-antes-do-push)
 - [🌐 Aplicação Node.js](#aplicacao-nodejs)
 - [☁️ GitHub-hosted runner](#github-hosted-runner)
 - [🖥️ Self-hosted runner no WSL2](#self-hosted-runner-no-wsl2)
@@ -161,6 +162,32 @@ curl http://localhost:3000/build-info
 
 Observação:
 Se o Node local estiver abaixo da versão esperada, alguns comandos do projeto usam Docker com `Node 20` como fallback.
+
+[⬆️ Retornar ao índice](#indice)
+
+<a id="validacao-antes-do-push"></a>
+## 🧪 Validação antes do push
+
+Antes de enviar mudanças para o GitHub, rode:
+
+```bash
+make check
+```
+
+Esse comando valida:
+
+- presença dos arquivos principais do projeto;
+- presença dos workflows centrais do laboratório;
+- presença da documentação obrigatória;
+- execução de `npm test` com sucesso.
+
+Se quiser validar também a imagem Docker local:
+
+```bash
+make docker-build
+```
+
+Essa checagem é local, não exige `self-hosted runner` online e não executa workflows remotos.
 
 [⬆️ Retornar ao índice](#indice)
 

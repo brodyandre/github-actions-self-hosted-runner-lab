@@ -22,4 +22,4 @@ diagnostics:
 	./scripts/safe-diagnostics.sh
 
 docker-build:
-	docker build -t github-actions-self-hosted-runner-lab:local .
+	docker build -t self-hosted-runner-node-lab:local .
