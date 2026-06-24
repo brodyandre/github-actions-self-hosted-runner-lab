@@ -12,10 +12,20 @@ print_version() {
   fi
 }
 
+normalize_path() {
+  local current_path="$1"
+
+  if [ -n "${HOME:-}" ] && [[ "$current_path" == "$HOME"* ]]; then
+    printf "~%s\n" "${current_path#"$HOME"}"
+  else
+    printf "%s\n" "$current_path"
+  fi
+}
+
 printf "dateTime: %s\n" "$(date -Is)"
 printf "hostname: %s\n" "$(hostname)"
 printf "whoami: %s\n" "$(whoami)"
-printf "pwd: %s\n" "$(pwd)"
+printf "pwd: %s\n" "$(normalize_path "$(pwd)")"
 printf "uname: %s\n" "$(uname -a)"
 print_version "nodeVersion" node --version
 print_version "npmVersion" npm --version
