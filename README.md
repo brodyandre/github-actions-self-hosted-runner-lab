@@ -27,7 +27,6 @@
 - [🏗️ Arquitetura do laboratório](#arquitetura-do-laboratorio)
 - [🛠️ Stack utilizada](#stack-utilizada)
 - [🚀 Como rodar localmente](#como-rodar-localmente)
-- [🧪 Validação antes do push](#validacao-antes-do-push)
 - [🌐 Aplicação Node.js](#aplicacao-nodejs)
 - [☁️ GitHub-hosted runner](#github-hosted-runner)
 - [🖥️ Self-hosted runner no WSL2](#self-hosted-runner-no-wsl2)
