@@ -1,6 +1,6 @@
 <div align="center">
   <h1>GitHub Actions Self-Hosted Runner Lab</h1>
-  <p>Laboratório em PT-BR para demonstrar GitHub Actions com GitHub-hosted runner e self-hosted runner no WSL2/Windows 11.</p>
+  <p>Laboratório prático para demonstrar GitHub Actions com GitHub-hosted runner e self-hosted runner no WSL2 / Windows 11.</p>
   <p>
     <a href="https://github.com/brodyandre/github-actions-self-hosted-runner-lab/actions/workflows/github-hosted-runner.yml">
       <img alt="Workflow GitHub-hosted runner" src="https://github.com/brodyandre/github-actions-self-hosted-runner-lab/actions/workflows/github-hosted-runner.yml/badge.svg" />
@@ -18,65 +18,97 @@
 </div>
 
 <a id="indice"></a>
-## Índice
+## 📚 Índice
 
-- [Visão geral](#visao-geral)
-- [Objetivo](#objetivo)
-- [Arquitetura do laboratório](#arquitetura-do-laboratorio)
-- [Stack utilizada](#stack-utilizada)
-- [Estrutura do projeto](#estrutura-do-projeto)
-- [Como rodar localmente](#como-rodar-localmente)
-- [Como executar testes](#como-executar-testes)
-- [Como validar endpoints](#como-validar-endpoints)
-- [GitHub-hosted runner](#github-hosted-runner)
-- [Self-hosted runner](#self-hosted-runner)
-- [Cuidados de segurança](#cuidados-de-seguranca)
-- [Labels de runner](#labels-de-runner)
-- [Diagnóstico seguro](#diagnostico-seguro)
-- [Docker no self-hosted runner](#docker-no-self-hosted-runner)
-- [Evidências visuais](#evidencias-visuais)
-- [Troubleshooting](#troubleshooting)
-- [Habilidades demonstradas](#habilidades-demonstradas)
-- [Próximos passos](#proximos-passos)
-- [Autor](#autor)
+- [🧭 Resumo](#resumo)
+- [🔎 Visão geral](#visao-geral)
+- [🎯 Objetivo](#objetivo)
+- [✅ O que é demonstrado](#o-que-e-demonstrado)
+- [🏗️ Arquitetura do laboratório](#arquitetura-do-laboratorio)
+- [🛠️ Stack utilizada](#stack-utilizada)
+- [🚀 Como rodar localmente](#como-rodar-localmente)
+- [🌐 Aplicação Node.js](#aplicacao-nodejs)
+- [☁️ GitHub-hosted runner](#github-hosted-runner)
+- [🖥️ Self-hosted runner no WSL2](#self-hosted-runner-no-wsl2)
+- [🏷️ Labels de runner](#labels-de-runner)
+- [🔐 Diagnóstico seguro](#diagnostico-seguro)
+- [🐳 Docker no self-hosted runner](#docker-no-self-hosted-runner)
+- [🖼️ Evidências visuais](#evidencias-visuais)
+- [📸 Como capturar prints](#como-capturar-prints)
+- [🧯 Troubleshooting](#troubleshooting)
+- [🔒 Cuidados de segurança](#cuidados-de-seguranca)
+- [💼 Habilidades demonstradas](#habilidades-demonstradas)
+- [🗺️ Próximos passos](#proximos-passos)
+- [👤 Autor](#autor)
+
+[⬆️ Retornar ao índice](#indice)
+
+<a id="resumo"></a>
+## 🧭 Resumo
+
+Laboratório simples e objetivo para demonstrar GitHub Actions com foco em `self-hosted runner`, segurança operacional e uso prático de `Node.js`, `Docker` e `WSL2`.
+
+[⬆️ Retornar ao índice](#indice)
 
 <a id="visao-geral"></a>
-## Visão geral
+## 🔎 Visão geral
 
-Este repositório foi preparado como um laboratório simples, profissional e objetivo para comparar execuções de workflow em dois cenários: `GitHub-hosted runner` e `self-hosted runner` rodando em `WSL2` sobre `Windows 11`.
+Este projeto foi pensado como peça de portfólio técnico para demonstrar uma esteira pequena, clara e profissional usando GitHub Actions em dois cenários:
 
-A proposta é mostrar uma base pequena e funcional, com aplicação Node.js sem dependências externas, workflows mínimos, documentação em PT-BR e espaço reservado para evidências visuais.
+- `GitHub-hosted runner` para validação padrão.
+- `Self-hosted runner` no `WSL2 / Windows 11` para uso controlado de recursos locais.
+
+O laboratório reforça competências relevantes para vagas em:
+
+| Área | Valor demonstrado |
+| --- | --- |
+| DevOps | Automação de workflows, uso de runners e organização operacional |
+| CI/CD | Execução manual e validada de pipelines simples |
+| Cloud | Entendimento de ambientes efêmeros versus infraestrutura controlada |
+| Engenharia de Dados | Boas práticas de automação, rastreabilidade e segurança |
 
 [⬆️ Retornar ao índice](#indice)
 
 <a id="objetivo"></a>
-## Objetivo
+## 🎯 Objetivo
 
-Demonstrar, de forma prática, os seguintes pontos:
+Demonstrar, de forma prática, como:
 
-- Execução de workflow em runner hospedado pelo GitHub.
-- Execução de workflow em runner self-hosted no WSL2.
-- Validação simples de projeto com scripts seguros.
-- Execução de diagnóstico sem exposição de segredos.
-- Preparação para build Docker no runner self-hosted.
+- validar uma aplicação Node.js com GitHub Actions;
+- comparar `GitHub-hosted` e `self-hosted runner`;
+- executar diagnóstico seguro sem expor segredos;
+- usar Docker no runner local para build e teste simples;
+- adotar um uso mais seguro de `self-hosted runners`.
+
+[⬆️ Retornar ao índice](#indice)
+
+<a id="o-que-e-demonstrado"></a>
+## ✅ O que é demonstrado
+
+- Workflow padrão em `ubuntu-latest`.
+- Workflow manual apontando para runner local com labels.
+- Diagnóstico seguro do ambiente do runner.
+- Build local de imagem Docker no `self-hosted runner`.
+- Geração de artifacts para evidência técnica.
+- Documentação em PT-BR com foco profissional.
 
 [⬆️ Retornar ao índice](#indice)
 
 <a id="arquitetura-do-laboratorio"></a>
-## Arquitetura do laboratório
+## 🏗️ Arquitetura do laboratório
 
 ```text
 GitHub Repository
 ├── Workflow 1: github-hosted-runner
 │   └── Runner: ubuntu-latest
 ├── Workflow 2: self-hosted-runner
-│   └── Runner: self-hosted (WSL2 / Windows 11)
+│   └── Runner: WSL2 / Windows 11 com labels compatíveis
 ├── Workflow 3: self-hosted-diagnostics
-│   └── Runner: self-hosted (WSL2 / Windows 11)
+│   └── Runner: WSL2 / Windows 11 com diagnóstico seguro
 └── Workflow 4: docker-self-hosted
-    └── Runner: self-hosted com Docker habilitado
+    └── Runner: WSL2 / Windows 11 com Docker disponível
 
-Aplicação demonstrada
+Aplicação de exemplo
 └── Node.js HTTP Server
     ├── GET /
     ├── GET /health
@@ -87,76 +119,31 @@ Aplicação demonstrada
 [⬆️ Retornar ao índice](#indice)
 
 <a id="stack-utilizada"></a>
-## Stack utilizada
+## 🛠️ Stack utilizada
 
-- `Node.js` para a aplicação de exemplo.
-- `node:http` para a API HTTP nativa.
-- `node:test` para testes automatizados.
-- `GitHub Actions` para automação dos workflows.
-- `Bash` para scripts de validação e diagnóstico seguro.
-- `Docker` como etapa opcional no runner self-hosted.
-- `WSL2` no `Windows 11` como ambiente recomendado para o runner self-hosted.
-
-[⬆️ Retornar ao índice](#indice)
-
-<a id="estrutura-do-projeto"></a>
-## Estrutura do projeto
-
-```text
-.
-├── .dockerignore
-├── .env.example
-├── .github/
-│   └── workflows/
-│       ├── docker-self-hosted.yml
-│       ├── github-hosted-runner.yml
-│       ├── self-hosted-diagnostics.yml
-│       └── self-hosted-runner.yml
-├── .gitignore
-├── .nvmrc
-├── .vscode/
-│   └── settings.json
-├── Dockerfile
-├── Makefile
-├── README.md
-├── app/
-│   ├── config.js
-│   └── server.js
-├── docs/
-│   ├── evidence.md
-│   ├── evidence/
-│   ├── images/
-│   ├── runner/
-│   │   └── labels.md
-│   ├── security-notes.md
-│   ├── setup-self-hosted-runner.md
-│   ├── troubleshooting.md
-│   └── troubleshooting/
-├── package.json
-├── test/
-│   └── server.test.js
-└── scripts/
-    ├── check-project.sh
-    ├── run-with-node20.sh
-    ├── safe-diagnostics.sh
-    └── start-app.sh
-```
+| Item | Uso no laboratório |
+| --- | --- |
+| `Node.js 20` | Aplicação e execução local |
+| `node:http` | API HTTP nativa, sem framework pesado |
+| `node:test` | Testes automatizados |
+| `GitHub Actions` | Automação dos workflows |
+| `Bash` | Scripts de validação e diagnóstico |
+| `Docker` | Build e teste local da imagem |
+| `WSL2` | Ambiente do self-hosted runner |
 
 [⬆️ Retornar ao índice](#indice)
 
 <a id="como-rodar-localmente"></a>
-## Como rodar localmente
+## 🚀 Como rodar localmente
 
 Pré-requisito recomendado: `Node.js 20` ou superior.
 
-1. Copie `.env.example` para `.env` se quiser customizar porta, host ou nome da aplicação.
-2. Use `nvm use` se você tiver `nvm` instalado.
-3. Execute `make install`.
-4. Execute `make check` para validar estrutura, lint e testes.
+1. Copie `.env.example` para `.env`.
+2. Se usar `nvm`, execute `nvm use`.
+3. Rode `make install`.
+4. Rode `make check`.
 5. Inicie a aplicação com `npm start` ou `make start`.
-6. Acesse os endpoints locais.
-
-A aplicação lê o arquivo `.env` automaticamente, sem dependências externas. Se o Node local estiver abaixo da versão esperada, os comandos `make install`, `make start` e `make test` usam Docker com `Node 20` como fallback.
+6. Valide os endpoints locais.
 
 Comandos úteis:
 
@@ -172,124 +159,109 @@ curl http://localhost:3000/runner-info
 curl http://localhost:3000/build-info
 ```
 
-[⬆️ Retornar ao índice](#indice)
-
-<a id="como-executar-testes"></a>
-## Como executar testes
-
-Os testes usam `node:test`, sem framework adicional.
-
-Comandos:
-
-```bash
-npm test
-make test
-```
-
-O script `make check` também executa:
-
-- Verificação de estrutura.
-- Lint por sintaxe com `node --check`.
-- Testes automatizados da API.
-- Fallback com Docker `node:20` quando o Node local estiver antigo.
+Observação:
+Se o Node local estiver abaixo da versão esperada, alguns comandos do projeto usam Docker com `Node 20` como fallback.
 
 [⬆️ Retornar ao índice](#indice)
 
-<a id="como-validar-endpoints"></a>
-## Como validar endpoints
+<a id="aplicacao-nodejs"></a>
+## 🌐 Aplicação Node.js
 
-Com a aplicação em execução, valide os endpoints abaixo:
+A aplicação foi mantida pequena para destacar o foco principal do laboratório: os runners.
 
-```bash
-curl http://localhost:3000/
-curl http://localhost:3000/health
-curl http://localhost:3000/runner-info
-curl http://localhost:3000/build-info
-```
+Endpoints disponíveis:
 
-Resumo esperado:
+| Endpoint | Finalidade |
+| --- | --- |
+| `GET /` | Retorna nome da aplicação e status |
+| `GET /health` | Retorna status de saúde |
+| `GET /runner-info` | Retorna informações seguras do ambiente |
+| `GET /build-info` | Retorna nome, versão e ambiente |
 
-- `GET /`: retorna `appName` e `status`.
-- `GET /health`: retorna `status: ok`.
-- `GET /runner-info`: retorna informações seguras do ambiente do runner.
-- `GET /build-info`: retorna nome da aplicação, versão e ambiente.
+Pontos positivos para portfólio:
+
+- uso de `node:http` nativo;
+- sem dependências desnecessárias;
+- testes com `node:test`;
+- respostas pequenas e seguras.
 
 [⬆️ Retornar ao índice](#indice)
 
 <a id="github-hosted-runner"></a>
-## GitHub-hosted runner
+## ☁️ GitHub-hosted runner
 
-O workflow [`github-hosted-runner.yml`](.github/workflows/github-hosted-runner.yml) demonstra a execução padrão do GitHub Actions em `ubuntu-latest`. Ele instala o projeto de forma compatível com ou sem `package-lock.json`, executa `npm test`, roda `npm run diagnostics`, gera um relatório em `artifacts/github-hosted-report.txt` e publica esse arquivo como artifact.
+O workflow [`github-hosted-runner.yml`](.github/workflows/github-hosted-runner.yml) mostra a execução padrão do GitHub Actions em `ubuntu-latest`.
 
-Diferença prática para o self-hosted runner:
+Ele demonstra:
 
-- `GitHub-hosted`: ambiente efêmero, pronto para uso e mantido pelo GitHub.
-- `Self-hosted`: ambiente controlado por você, útil quando precisa de acesso local, Docker específico ou ferramentas próprias.
+- instalação do projeto;
+- execução de testes;
+- execução de diagnóstico;
+- geração de artifact de validação.
 
-Ponto preparado para print:
+Leitura rápida:
+
+| Tipo | Característica |
+| --- | --- |
+| Ambiente | Efêmero e mantido pelo GitHub |
+| Uso ideal | Validação padrão e setup rápido |
+| Ganho profissional | Base de CI simples, previsível e reprodutível |
+
+Espaço sugerido para print:
 
 - `docs/images/github-hosted-workflow-success.png`
 
 [⬆️ Retornar ao índice](#indice)
 
-<a id="self-hosted-runner"></a>
-## Self-hosted runner
+<a id="self-hosted-runner-no-wsl2"></a>
+## 🖥️ Self-hosted runner no WSL2
 
-O workflow [`self-hosted-runner.yml`](.github/workflows/self-hosted-runner.yml) foi preparado para execução manual em um runner com labels `self-hosted`, `linux`, `x64` e `wsl2`. Ele demonstra que o GitHub Actions pode direcionar um job para a sua máquina local no WSL2 usando labels compatíveis.
+O workflow [`self-hosted-runner.yml`](.github/workflows/self-hosted-runner.yml) demonstra como direcionar um job para a máquina local usando labels compatíveis no `WSL2 / Windows 11`.
 
 Esse workflow:
 
 - roda somente por `workflow_dispatch`;
+- usa `runs-on: [self-hosted, linux, x64, wsl2]`;
 - executa `npm install` e `npm test`;
-- roda `./scripts/safe-diagnostics.sh`;
-- gera `artifacts/self-hosted-report.txt`;
-- publica o relatório como artifact.
+- roda diagnóstico seguro;
+- gera `artifact` para evidência técnica.
 
-Para evitar divergência de versão entre máquinas, esse workflow também instala `Node 20` com `actions/setup-node`.
+Como executar manualmente no GitHub:
 
-Resumo da comparação:
+1. Confirme que o runner está `Online`.
+2. Abra a aba `Actions`.
+3. Selecione `self-hosted-runner`.
+4. Clique em `Run workflow`.
+5. Acompanhe a execução e baixe o artifact ao final.
 
-- `GitHub-hosted` é melhor para validação padrão, rapidez de setup e manutenção mínima.
-- `Self-hosted` é melhor para cenários com dependências locais, controle de infraestrutura e integração com recursos do host.
+Valor para empregabilidade:
 
-Pontos preparados para print:
+- mostra domínio prático de runners customizados;
+- reforça entendimento de CI/CD fora de ambiente efêmero;
+- evidencia cuidado com segurança e operação manual controlada.
+
+Espaços sugeridos para prints:
 
 - `docs/images/runner-settings.png`
 - `docs/images/self-hosted-runner-online.png`
 - `docs/images/self-hosted-workflow-success.png`
 
-Como executar manualmente:
-
-1. Confirme no GitHub se o runner está `Online`.
-2. Abra a aba `Actions` do repositório.
-3. Selecione o workflow `self-hosted-runner`.
-4. Clique em `Run workflow`.
-5. Acompanhe o job e, ao final, baixe o artifact `self-hosted-report`.
-
-[⬆️ Retornar ao índice](#indice)
-
-<a id="cuidados-de-seguranca"></a>
-## Cuidados de segurança
-
-Para este laboratório, o uso do `self-hosted runner` deve ser controlado.
-
-- Não versione tokens, credenciais ou arquivos internos do runner.
-- O token de registro do runner é temporário e deve ser copiado apenas da interface do GitHub.
-- Não grave o token em scripts, `.env` ou arquivos do repositório.
-- Prefira `workflow_dispatch` para jobs `self-hosted`.
-- Mantenha o runner fora da pasta do projeto.
-- Em repositórios públicos, tenha cuidado redobrado com jobs que usam shell, Docker ou acesso ao host.
-
-Mais detalhes em [docs/security-notes.md](docs/security-notes.md) e [docs/setup-self-hosted-runner.md](docs/setup-self-hosted-runner.md).
-
 [⬆️ Retornar ao índice](#indice)
 
 <a id="labels-de-runner"></a>
-## Labels de runner
+## 🏷️ Labels de runner
 
-As labels recomendadas para o laboratório estão descritas em [docs/runner/labels.md](docs/runner/labels.md). Para este cenário, o conjunto recomendado é `self-hosted`, `linux`, `x64`, `wsl2` e `devops-lab`.
+As labels recomendadas para este laboratório são:
 
-Exemplo de uso em workflow:
+| Label | Motivo |
+| --- | --- |
+| `self-hosted` | Identifica runner fora do GitHub-hosted |
+| `linux` | Indica o sistema operacional usado no WSL2 |
+| `x64` | Indica a arquitetura |
+| `wsl2` | Diferencia este runner de outros hosts Linux |
+| `devops-lab` | Facilita organização do laboratório |
+
+Exemplo de uso:
 
 ```yaml
 runs-on: [self-hosted, linux, x64, wsl2]
@@ -298,9 +270,11 @@ runs-on: [self-hosted, linux, x64, wsl2]
 [⬆️ Retornar ao índice](#indice)
 
 <a id="diagnostico-seguro"></a>
-## Diagnóstico seguro
+## 🔐 Diagnóstico seguro
 
-O script [`scripts/safe-diagnostics.sh`](scripts/safe-diagnostics.sh) imprime apenas informações seguras e objetivas:
+O script [`scripts/safe-diagnostics.sh`](scripts/safe-diagnostics.sh) foi criado para demonstrar leitura segura do ambiente do runner.
+
+Ele imprime apenas:
 
 - `hostname`
 - `whoami`
@@ -316,96 +290,147 @@ O script [`scripts/safe-diagnostics.sh`](scripts/safe-diagnostics.sh) imprime ap
 - `RUNNER_ARCH`
 - `RUNNER_NAME`
 
-O script não imprime `env` completo, `secrets`, tokens ou arquivos sensíveis.
+Ele não imprime:
 
-O workflow [`self-hosted-diagnostics.yml`](.github/workflows/self-hosted-diagnostics.yml) foi preparado para disparo manual no runner self-hosted.
+- `env` completo;
+- `secrets`;
+- tokens;
+- arquivos sensíveis;
+- caminhos de credenciais do usuário.
 
-Esse diagnóstico é seguro e manual:
+O workflow [`self-hosted-diagnostics.yml`](.github/workflows/self-hosted-diagnostics.yml) é manual e foi pensado para uso controlado.
 
-- roda somente por `workflow_dispatch`;
-- não imprime `env` completo;
-- não imprime `secrets` ou tokens;
-- executa apenas `./scripts/safe-diagnostics.sh`;
-- gera o artifact `diagnostics-report`.
-
-Ponto preparado para print:
+Espaço sugerido para print:
 
 - `docs/images/diagnostics-workflow.png`
 
 [⬆️ Retornar ao índice](#indice)
 
 <a id="docker-no-self-hosted-runner"></a>
-## Docker no self-hosted runner
+## 🐳 Docker no self-hosted runner
 
-O workflow [`docker-self-hosted.yml`](.github/workflows/docker-self-hosted.yml) demonstra uma vantagem prática do `self-hosted runner`: acesso controlado a recursos locais do host, como o Docker no WSL2.
+O workflow [`docker-self-hosted.yml`](.github/workflows/docker-self-hosted.yml) mostra por que o `self-hosted runner` é útil quando o job precisa acessar recursos da própria máquina.
 
-Esse fluxo:
+O fluxo faz:
 
-- roda somente por `workflow_dispatch`;
-- faz build local da imagem `self-hosted-runner-node-lab:local`;
-- sobe um container na porta `3000`;
-- testa `GET /health` com `curl`;
-- remove o container ao final;
-- gera o artifact `docker-build-report`.
+- build local da imagem `self-hosted-runner-node-lab:local`;
+- subida de container na porta `3000`;
+- teste de `GET /health` com `curl`;
+- limpeza do container ao final;
+- geração de artifact do build.
 
-Isso é útil quando você quer validar integrações que dependem do ambiente local, do Docker Engine ou de ferramentas instaladas no próprio host.
+Valor prático:
 
-Ponto preparado para print:
+| Cenário | Ganho |
+| --- | --- |
+| Docker local | Uso direto do Docker Engine do host |
+| CI de laboratório | Teste simples sem depender de registry |
+| Portfólio DevOps | Demonstra integração entre runner, container e aplicação |
+
+Espaço sugerido para print:
 
 - `docs/images/docker-build-self-hosted.png`
 
 [⬆️ Retornar ao índice](#indice)
 
 <a id="evidencias-visuais"></a>
-## Evidências visuais
+## 🖼️ Evidências visuais
 
-Salve os prints nos caminhos abaixo para completar a apresentação do laboratório:
+Os itens abaixo são sugestões de captura para enriquecer o portfólio. Eles funcionam como placeholders documentados até que as imagens sejam adicionadas.
 
-| Evidência | Caminho preparado |
-| --- | --- |
-| Badges do README | `docs/images/readme-badges.png` |
-| Configuração do runner no GitHub | `docs/images/runner-settings.png` |
-| Runner self-hosted online | `docs/images/self-hosted-runner-online.png` |
-| Sucesso do workflow GitHub-hosted | `docs/images/github-hosted-workflow-success.png` |
-| Sucesso do workflow self-hosted | `docs/images/self-hosted-workflow-success.png` |
-| Workflow de diagnóstico | `docs/images/diagnostics-workflow.png` |
-| Build Docker no self-hosted | `docs/images/docker-build-self-hosted.png` |
+| Print sugerido | Nome do arquivo | Onde inserir | O que comprova |
+| --- | --- | --- | --- |
+| Tela de runners no GitHub | `docs/images/runner-settings.png` | Seção `Self-hosted runner no WSL2` | Configuração da área de runners |
+| Runner online no GitHub | `docs/images/self-hosted-runner-online.png` | Seção `Self-hosted runner no WSL2` | Runner local reconhecido como `Online` |
+| Workflow GitHub-hosted com sucesso | `docs/images/github-hosted-workflow-success.png` | Seção `GitHub-hosted runner` | Execução padrão em `ubuntu-latest` |
+| Workflow self-hosted com sucesso | `docs/images/self-hosted-workflow-success.png` | Seção `Self-hosted runner no WSL2` | Job direcionado ao runner local |
+| Workflow de diagnóstico | `docs/images/diagnostics-workflow.png` | Seção `Diagnóstico seguro` | Coleta segura de informações do runner |
+| Build Docker no self-hosted | `docs/images/docker-build-self-hosted.png` | Seção `Docker no self-hosted runner` | Uso do Docker do host pelo workflow |
+| Badges do README | `docs/images/readme-badges.png` | Topo do README ou seção de evidências | Estado visual dos workflows |
 
-Mais detalhes em [docs/evidence.md](docs/evidence.md).
+[⬆️ Retornar ao índice](#indice)
+
+<a id="como-capturar-prints"></a>
+## 📸 Como capturar prints
+
+Para deixar o README mais completo, você pode capturar:
+
+1. A tela `Settings > Actions > Runners` com o runner `Online`.
+2. A execução do workflow `github-hosted-runner`.
+3. A execução do workflow `self-hosted-runner`.
+4. O artifact gerado pelo workflow `self-hosted-diagnostics`.
+5. O build Docker e o teste de `/health` no workflow `docker-self-hosted`.
+6. As badges do topo do README após as execuções.
+
+Orientação prática:
+
+- salve as imagens em `docs/images/`;
+- use exatamente os nomes sugeridos na tabela de evidências;
+- insira cada imagem na seção correspondente quando os arquivos existirem;
+- revise prints para garantir que não exibam tokens, secrets ou dados sensíveis.
 
 [⬆️ Retornar ao índice](#indice)
 
 <a id="troubleshooting"></a>
-## Troubleshooting
+## 🧯 Troubleshooting
 
-Os problemas mais comuns do laboratório estão consolidados em [docs/troubleshooting.md](docs/troubleshooting.md), com apoio da pasta `docs/troubleshooting/` para registrar saídas, logs e capturas futuras.
+Os problemas operacionais mais comuns estão documentados em [docs/troubleshooting.md](docs/troubleshooting.md).
+
+Resumo rápido:
+
+- runner offline;
+- labels incompatíveis;
+- Docker não encontrado;
+- Docker Desktop desligado;
+- permissão no socket Docker;
+- porta `3000` ocupada.
+
+[⬆️ Retornar ao índice](#indice)
+
+<a id="cuidados-de-seguranca"></a>
+## 🔒 Cuidados de segurança
+
+Este laboratório reforça o uso responsável de `self-hosted runners`.
+
+- Não versione tokens, credenciais ou arquivos internos do runner.
+- O token de registro é temporário e deve ser copiado apenas da interface do GitHub.
+- Prefira `workflow_dispatch` em jobs `self-hosted`.
+- Evite manter o runner ligado sem necessidade.
+- Em repositórios públicos, revise com atenção qualquer job com shell, Docker ou acesso ao host.
+- Mantenha o diretório do runner fora da pasta versionada do projeto.
+
+Mais detalhes:
+
+- [docs/security-notes.md](docs/security-notes.md)
+- [docs/setup-self-hosted-runner.md](docs/setup-self-hosted-runner.md)
 
 [⬆️ Retornar ao índice](#indice)
 
 <a id="habilidades-demonstradas"></a>
-## Habilidades demonstradas
+## 💼 Habilidades demonstradas
 
-- Criação de workflows simples e objetivos.
-- Diferença prática entre `GitHub-hosted` e `self-hosted`.
-- Organização de documentação técnica em PT-BR.
-- Boas práticas de segurança para runners e scripts.
-- Uso de `Node.js`, `Bash` e `Docker` em um laboratório enxuto.
+- GitHub Actions com `GitHub-hosted` e `self-hosted runner`.
+- Organização de pipelines simples para CI/CD.
+- Execução segura de diagnóstico operacional.
+- Uso prático de Docker em ambiente local controlado.
+- Estruturação de laboratório técnico com documentação clara.
+- Boa base para portfólio em DevOps, Cloud e Engenharia de Dados.
 
 [⬆️ Retornar ao índice](#indice)
 
 <a id="proximos-passos"></a>
-## Próximos passos
+## 🗺️ Próximos passos
 
-- Adicionar badges reais após a primeira execução dos workflows.
-- Publicar evidências visuais na pasta `docs/images/`.
-- Registrar saídas relevantes em `docs/evidence/`.
-- Evoluir os workflows com cache, matrix ou ambientes protegidos.
-- Configurar o runner como serviço persistente no WSL2, se fizer sentido para o laboratório.
+- Adicionar os prints sugeridos.
+- Publicar mais artifacts de evidência.
+- Evoluir o workflow com cache e matrix.
+- Testar execução com labels mais específicas.
+- Explorar uso de serviço persistente para o runner no WSL2.
 
 [⬆️ Retornar ao índice](#indice)
 
 <a id="autor"></a>
-## Autor
+## 👤 Autor
 
 **Luiz André de Souza**
 
