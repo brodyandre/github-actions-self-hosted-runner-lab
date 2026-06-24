@@ -336,7 +336,7 @@ Registro do build e teste com Docker:
 <a id="evidencias-visuais"></a>
 ## 🖼️ Evidências visuais
 
-As imagens abaixo já podem ser usadas como evidências do laboratório no portfólio e na documentação do projeto.
+As imagens abaixo reforçam a comprovação prática do laboratório e ajudam a apresentar o projeto de forma mais clara em contexto de portfólio técnico.
 
 | Print sugerido | Nome do arquivo | O que comprova |
 | --- | --- | --- |
