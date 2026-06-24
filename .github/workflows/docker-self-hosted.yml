@@ -7,18 +7,88 @@ permissions:
   contents: read
 
 jobs:
-  docker-build:
+  docker-build-and-test:
+    # Este job depende de um runner self-hosted Online
+    # com Docker disponível e labels compatíveis.
     runs-on:
       - self-hosted
       - linux
       - x64
+      - wsl2
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Preparar variáveis
+        run: |
+          echo "IMAGE_NAME=self-hosted-runner-node-lab:local" >> "$GITHUB_ENV"
+          echo "CONTAINER_NAME=self-hosted-runner-node-lab" >> "$GITHUB_ENV"
+
       - name: Verificar Docker
-        run: docker --version
+        run: |
+          echo "::group::Docker"
+          docker --version
+          echo "::endgroup::"
 
       - name: Build da imagem
-        run: docker build -t github-actions-self-hosted-runner-lab:local .
+        run: |
+          echo "::group::Build da imagem"
+          docker build -t "$IMAGE_NAME" .
+          echo "::endgroup::"
+
+      - name: Subir container
+        run: |
+          echo "::group::Subida do container"
+          docker rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true
+          docker run -d --name "$CONTAINER_NAME" -p 3000:3000 "$IMAGE_NAME"
+          echo "::endgroup::"
+
+      - name: Testar endpoint /health
+        run: |
+          echo "::group::Teste do endpoint /health"
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
+            if curl --fail --silent http://127.0.0.1:3000/health; then
+              echo
+              echo "Health check executado com sucesso."
+              break
+            fi
+
+            if [ "$attempt" -eq 10 ]; then
+              echo "Falha ao validar /health na porta 3000." >&2
+              exit 1
+            fi
+
+            sleep 2
+          done
+          echo "::endgroup::"
+
+      - name: Gerar relatório
+        run: |
+          echo "::group::Relatório"
+          mkdir -p artifacts
+          {
+            echo "Workflow: docker-self-hosted"
+            echo "Imagem: $IMAGE_NAME"
+            echo "Container: $CONTAINER_NAME"
+            echo "Runner labels: self-hosted, linux, x64, wsl2"
+            echo "Docker: $(docker --version)"
+            echo "Data UTC: $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+            echo "Status: build e teste do container concluídos com sucesso"
+          } > artifacts/docker-build-report.txt
+          cat artifacts/docker-build-report.txt
+          echo "::endgroup::"
+
+      - name: Upload do artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-build-report
+          path: artifacts/docker-build-report.txt
+          if-no-files-found: error
+
+      - name: Remover container
+        if: always()
+        run: |
+          echo "::group::Limpeza"
+          docker rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true
+          echo "::endgroup::"

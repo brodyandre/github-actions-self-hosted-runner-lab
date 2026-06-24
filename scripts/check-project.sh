@@ -19,6 +19,7 @@ required_directories=(
 required_files=(
   "README.md"
   ".gitignore"
+  ".dockerignore"
   ".env.example"
   "Makefile"
   "package.json"

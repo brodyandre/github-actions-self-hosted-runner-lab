@@ -11,7 +11,9 @@
     <a href="https://github.com/brodyandre/github-actions-self-hosted-runner-lab/actions/workflows/self-hosted-diagnostics.yml">
       <img alt="Workflow Self-hosted diagnostics" src="https://github.com/brodyandre/github-actions-self-hosted-runner-lab/actions/workflows/self-hosted-diagnostics.yml/badge.svg" />
     </a>
-    <img alt="Docker placeholder" src="https://img.shields.io/badge/Docker-placeholder-lightgrey?logo=docker" />
+    <a href="https://github.com/brodyandre/github-actions-self-hosted-runner-lab/actions/workflows/docker-self-hosted.yml">
+      <img alt="Workflow Docker self-hosted" src="https://github.com/brodyandre/github-actions-self-hosted-runner-lab/actions/workflows/docker-self-hosted.yml/badge.svg" />
+    </a>
   </p>
 </div>
 
@@ -102,6 +104,7 @@ Aplicação demonstrada
 
 ```text
 .
+├── .dockerignore
 ├── .env.example
 ├── .github/
 │   └── workflows/
@@ -334,9 +337,18 @@ Ponto preparado para print:
 <a id="docker-no-self-hosted-runner"></a>
 ## Docker no self-hosted runner
 
-O workflow [`docker-self-hosted.yml`](.github/workflows/docker-self-hosted.yml) valida o acesso ao Docker no runner self-hosted e executa um `docker build` usando o [`Dockerfile`](Dockerfile) deste projeto.
+O workflow [`docker-self-hosted.yml`](.github/workflows/docker-self-hosted.yml) demonstra uma vantagem prática do `self-hosted runner`: acesso controlado a recursos locais do host, como o Docker no WSL2.
 
-Esse fluxo ajuda a demonstrar uma vantagem prática do runner self-hosted: acesso controlado a recursos locais do host, como o Docker Engine.
+Esse fluxo:
+
+- roda somente por `workflow_dispatch`;
+- faz build local da imagem `self-hosted-runner-node-lab:local`;
+- sobe um container na porta `3000`;
+- testa `GET /health` com `curl`;
+- remove o container ao final;
+- gera o artifact `docker-build-report`.
+
+Isso é útil quando você quer validar integrações que dependem do ambiente local, do Docker Engine ou de ferramentas instaladas no próprio host.
 
 Ponto preparado para print:
 

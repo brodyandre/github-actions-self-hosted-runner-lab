@@ -42,6 +42,27 @@
 - Confirme se o usuário do runner tem permissão para usar o Docker.
 - Se o laboratório não precisar de Docker naquele momento, execute apenas os workflows de validação simples.
 
+## Docker não encontrado
+
+- Confirme se o comando `docker --version` funciona no WSL2.
+- Se o comando não existir, instale ou habilite o Docker antes de executar o workflow.
+
+## Docker Desktop desligado
+
+- Se você estiver usando Docker Desktop integrado ao WSL2, confirme se ele está iniciado.
+- Se o Docker Desktop estiver desligado, o runner não conseguirá fazer build nem subir container.
+
+## Permissão no socket Docker
+
+- Confirme se o usuário do runner tem acesso ao socket do Docker.
+- Se o erro mencionar permissão em `/var/run/docker.sock`, revise grupo, usuário ou forma de execução do runner.
+
+## Porta 3000 ocupada
+
+- O workflow Docker usa a porta `3000` para testar o container.
+- Se a porta já estiver em uso no host, pare o processo conflitante antes de rodar o workflow.
+- Em caso de conflito recorrente, revise se outro container ou aplicação local está ocupando essa porta.
+
 ## Cuidados em repositórios públicos
 
 - Evite manter o runner ativo sem necessidade.

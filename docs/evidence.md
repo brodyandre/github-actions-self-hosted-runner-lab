@@ -15,6 +15,7 @@ Use este documento para registrar os resultados do laboratório de forma organiz
 - Workflow de diagnóstico executado com sucesso.
 - Artifact `diagnostics-report` gerado e disponível para download.
 - Build Docker executado no self-hosted runner.
+- Artifact `docker-build-report` gerado e disponível para download.
 
 ## Checklist do workflow GitHub-hosted
 
@@ -49,6 +50,19 @@ Use este documento para registrar os resultados do laboratório de forma organiz
 - Nenhum token ou secret foi impresso nos logs.
 - Arquivo `artifacts/diagnostics-report.txt` gerado no job.
 - Artifact `diagnostics-report` enviado com sucesso para o GitHub Actions.
+
+## Checklist do workflow Docker
+
+- Workflow `docker-self-hosted` disparado manualmente por `workflow_dispatch`.
+- Runner exibido como `self-hosted` e `Online`.
+- Labels compatíveis com `self-hosted`, `linux`, `x64` e `wsl2`.
+- Docker disponível no host do runner.
+- Imagem `self-hosted-runner-node-lab:local` criada com sucesso.
+- Container iniciado com sucesso na porta `3000`.
+- Endpoint `GET /health` validado com `curl`.
+- Container removido ao final da execução.
+- Arquivo `artifacts/docker-build-report.txt` gerado no job.
+- Artifact `docker-build-report` enviado com sucesso para o GitHub Actions.
 
 ## Onde salvar os arquivos
 
