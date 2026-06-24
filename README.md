@@ -338,15 +338,15 @@ Registro do build e teste com Docker:
 
 As imagens abaixo já podem ser usadas como evidências do laboratório no portfólio e na documentação do projeto.
 
-| Print sugerido | Nome do arquivo | Onde inserir | O que comprova |
-| --- | --- | --- | --- |
-| Tela de runners no GitHub | `docs/images/runner-settings.png` | Seção `Self-hosted runner no WSL2` | Configuração da área de runners |
-| Runner online no GitHub | `docs/images/self-hosted-runner-online.png` | Seção `Self-hosted runner no WSL2` | Runner local reconhecido como `Online` |
-| Workflow GitHub-hosted com sucesso | `docs/images/github-hosted-workflow-success.png` | Seção `GitHub-hosted runner` | Execução padrão em `ubuntu-latest` |
-| Workflow self-hosted com sucesso | `docs/images/self-hosted-workflow-success.png` | Seção `Self-hosted runner no WSL2` | Job direcionado ao runner local |
-| Workflow de diagnóstico | `docs/images/diagnostics-workflow.png` | Seção `Diagnóstico seguro` | Coleta segura de informações do runner |
-| Build Docker no self-hosted | `docs/images/docker-build-self-hosted.png` | Seção `Docker no self-hosted runner` | Uso do Docker do host pelo workflow |
-| Badges do README | `docs/images/readme-badges.png` | Topo do README ou seção de evidências | Estado visual dos workflows |
+| Print sugerido | Nome do arquivo | O que comprova |
+| --- | --- | --- |
+| Tela de runners no GitHub | `docs/images/runner-settings.png` | Configuração da área de runners |
+| Runner online no GitHub | `docs/images/self-hosted-runner-online.png` | Runner local reconhecido como `Online` |
+| Workflow GitHub-hosted com sucesso | `docs/images/github-hosted-workflow-success.png` | Execução padrão em `ubuntu-latest` |
+| Workflow self-hosted com sucesso | `docs/images/self-hosted-workflow-success.png` | Job direcionado ao runner local |
+| Workflow de diagnóstico | `docs/images/diagnostics-workflow.png` | Coleta segura de informações do runner |
+| Build Docker no self-hosted | `docs/images/docker-build-self-hosted.png` | Uso do Docker do host pelo workflow |
+| Badges do README | `docs/images/readme-badges.png` | Estado visual dos workflows |
 
 Registro das badges do README:
 
