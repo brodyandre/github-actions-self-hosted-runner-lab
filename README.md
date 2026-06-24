@@ -33,7 +33,6 @@
 - [🏷️ Labels de runner](#labels-de-runner)
 - [🔐 Diagnóstico seguro](#diagnostico-seguro)
 - [🐳 Docker no self-hosted runner](#docker-no-self-hosted-runner)
-- [🖼️ Evidências visuais](#evidencias-visuais)
 - [🧯 Troubleshooting](#troubleshooting)
 - [🔒 Cuidados de segurança](#cuidados-de-seguranca)
 - [💼 Habilidades demonstradas](#habilidades-demonstradas)
