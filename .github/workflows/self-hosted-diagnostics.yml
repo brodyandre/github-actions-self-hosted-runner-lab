@@ -1,0 +1,51 @@
+name: self-hosted-diagnostics
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnostics-and-report:
+    runs-on:
+      - self-hosted
+      - linux
+      - x64
+      - wsl2
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Preparar scripts
+        run: |
+          echo "::group::Permissões de execução"
+          chmod +x scripts/*.sh
+          echo "::endgroup::"
+
+      - name: Executar diagnóstico seguro
+        run: |
+          echo "::group::Diagnóstico seguro"
+          ./scripts/safe-diagnostics.sh
+          echo "::endgroup::"
+
+      - name: Gerar relatório
+        run: |
+          echo "::group::Relatório"
+          mkdir -p artifacts
+          {
+            echo "Workflow: self-hosted-diagnostics"
+            echo "Runner labels: self-hosted, linux, x64, wsl2"
+            echo "Data UTC: $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+            echo "Status: diagnóstico seguro executado com sucesso"
+          } > artifacts/diagnostics-report.txt
+          cat artifacts/diagnostics-report.txt
+          echo "::endgroup::"
+
+      - name: Upload do artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: diagnostics-report
+          path: artifacts/diagnostics-report.txt
+          if-no-files-found: error

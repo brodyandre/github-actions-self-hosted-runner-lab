@@ -38,7 +38,7 @@ required_files=(
   ".vscode/settings.json"
   ".github/workflows/github-hosted-runner.yml"
   ".github/workflows/self-hosted-runner.yml"
-  ".github/workflows/safe-diagnostics.yml"
+  ".github/workflows/self-hosted-diagnostics.yml"
   ".github/workflows/docker-self-hosted.yml"
 )
 

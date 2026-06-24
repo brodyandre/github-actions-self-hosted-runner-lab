@@ -13,6 +13,7 @@ Use este documento para registrar os resultados do laboratório de forma organiz
 - Workflow self-hosted executado com sucesso.
 - Artifact `self-hosted-report` gerado e disponível para download.
 - Workflow de diagnóstico executado com sucesso.
+- Artifact `diagnostics-report` gerado e disponível para download.
 - Build Docker executado no self-hosted runner.
 
 ## Checklist do workflow GitHub-hosted
@@ -37,6 +38,17 @@ Use este documento para registrar os resultados do laboratório de forma organiz
 - Diagnóstico seguro executado com `./scripts/safe-diagnostics.sh`.
 - Arquivo `artifacts/self-hosted-report.txt` gerado no job.
 - Artifact enviado com sucesso para o GitHub Actions.
+
+## Checklist do workflow de diagnóstico
+
+- Workflow `self-hosted-diagnostics` disparado manualmente por `workflow_dispatch`.
+- Runner exibido como `self-hosted` e `Online`.
+- Labels compatíveis com `self-hosted`, `linux`, `x64` e `wsl2`.
+- Script `./scripts/safe-diagnostics.sh` executado com sucesso.
+- Nenhum `env` completo foi impresso nos logs.
+- Nenhum token ou secret foi impresso nos logs.
+- Arquivo `artifacts/diagnostics-report.txt` gerado no job.
+- Artifact `diagnostics-report` enviado com sucesso para o GitHub Actions.
 
 ## Onde salvar os arquivos
 

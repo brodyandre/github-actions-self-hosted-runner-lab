@@ -133,7 +133,7 @@ Esse padrão é especialmente importante quando:
 Depois que o runner ficar `Online`:
 
 1. Execute o workflow `self-hosted-runner`.
-2. Execute o workflow `safe-diagnostics`.
+2. Execute o workflow `self-hosted-diagnostics`.
 3. Se Docker estiver disponível, execute `docker-self-hosted`.
 
 ## Referências internas

@@ -8,7 +8,9 @@
     <a href="https://github.com/brodyandre/github-actions-self-hosted-runner-lab/actions/workflows/self-hosted-runner.yml">
       <img alt="Workflow Self-hosted runner" src="https://github.com/brodyandre/github-actions-self-hosted-runner-lab/actions/workflows/self-hosted-runner.yml/badge.svg" />
     </a>
-    <img alt="Diagnostics placeholder" src="https://img.shields.io/badge/Diagnostics-placeholder-lightgrey?logo=githubactions" />
+    <a href="https://github.com/brodyandre/github-actions-self-hosted-runner-lab/actions/workflows/self-hosted-diagnostics.yml">
+      <img alt="Workflow Self-hosted diagnostics" src="https://github.com/brodyandre/github-actions-self-hosted-runner-lab/actions/workflows/self-hosted-diagnostics.yml/badge.svg" />
+    </a>
     <img alt="Docker placeholder" src="https://img.shields.io/badge/Docker-placeholder-lightgrey?logo=docker" />
   </p>
 </div>
@@ -67,7 +69,7 @@ GitHub Repository
 │   └── Runner: ubuntu-latest
 ├── Workflow 2: self-hosted-runner
 │   └── Runner: self-hosted (WSL2 / Windows 11)
-├── Workflow 3: safe-diagnostics
+├── Workflow 3: self-hosted-diagnostics
 │   └── Runner: self-hosted (WSL2 / Windows 11)
 └── Workflow 4: docker-self-hosted
     └── Runner: self-hosted com Docker habilitado
@@ -105,7 +107,7 @@ Aplicação demonstrada
 │   └── workflows/
 │       ├── docker-self-hosted.yml
 │       ├── github-hosted-runner.yml
-│       ├── safe-diagnostics.yml
+│       ├── self-hosted-diagnostics.yml
 │       └── self-hosted-runner.yml
 ├── .gitignore
 ├── .nvmrc
@@ -313,7 +315,15 @@ O script [`scripts/safe-diagnostics.sh`](scripts/safe-diagnostics.sh) imprime ap
 
 O script não imprime `env` completo, `secrets`, tokens ou arquivos sensíveis.
 
-O workflow [`safe-diagnostics.yml`](.github/workflows/safe-diagnostics.yml) foi preparado para disparo manual no runner self-hosted.
+O workflow [`self-hosted-diagnostics.yml`](.github/workflows/self-hosted-diagnostics.yml) foi preparado para disparo manual no runner self-hosted.
+
+Esse diagnóstico é seguro e manual:
+
+- roda somente por `workflow_dispatch`;
+- não imprime `env` completo;
+- não imprime `secrets` ou tokens;
+- executa apenas `./scripts/safe-diagnostics.sh`;
+- gera o artifact `diagnostics-report`.
 
 Ponto preparado para print:
 

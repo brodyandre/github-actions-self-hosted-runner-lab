@@ -45,6 +45,7 @@ Em repositórios públicos, o cuidado deve ser maior.
 - `safe-diagnostics.sh` imprime apenas um conjunto reduzido de informações seguras.
 - O setup recomendado mantém o runner fora da pasta versionada.
 - Os workflows `self-hosted` deste laboratório são manuais.
+- O workflow `self-hosted-diagnostics` foi desenhado para diagnóstico seguro, sem `env` completo, sem tokens e sem `secrets`.
 
 ## Recomendações adicionais
 
