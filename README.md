@@ -234,9 +234,9 @@ Leitura rápida:
 | Uso ideal | Validação padrão e setup rápido |
 | Ganho profissional | Base de CI simples, previsível e reprodutível |
 
-Espaço sugerido para print:
+Registro da execução:
 
-- `docs/images/github-hosted-workflow-success.png`
+![Workflow GitHub-hosted com sucesso](docs/images/github-hosted-workflow-success.png)
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -267,11 +267,13 @@ Valor para empregabilidade:
 - reforça entendimento de CI/CD fora de ambiente efêmero;
 - evidencia cuidado com segurança e operação manual controlada.
 
-Espaços sugeridos para prints:
+Registros da configuração e execução:
 
-- `docs/images/runner-settings.png`
-- `docs/images/self-hosted-runner-online.png`
-- `docs/images/self-hosted-workflow-success.png`
+![Área de runners do repositório](docs/images/runner-settings.png)
+
+![Runner self-hosted online](docs/images/self-hosted-runner-online.png)
+
+![Workflow self-hosted com sucesso](docs/images/self-hosted-workflow-success.png)
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -327,9 +329,9 @@ Ele não imprime:
 
 O workflow [`self-hosted-diagnostics.yml`](.github/workflows/self-hosted-diagnostics.yml) é manual e foi pensado para uso controlado.
 
-Espaço sugerido para print:
+Registro do diagnóstico:
 
-- `docs/images/diagnostics-workflow.png`
+![Workflow de diagnóstico seguro](docs/images/diagnostics-workflow.png)
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -354,16 +356,16 @@ Valor prático:
 | CI de laboratório | Teste simples sem depender de registry |
 | Portfólio DevOps | Demonstra integração entre runner, container e aplicação |
 
-Espaço sugerido para print:
+Registro do build e teste com Docker:
 
-- `docs/images/docker-build-self-hosted.png`
+![Build Docker no self-hosted runner](docs/images/docker-build-self-hosted.png)
 
 [⬆️ Retornar ao índice](#indice)
 
 <a id="evidencias-visuais"></a>
 ## 🖼️ Evidências visuais
 
-Os itens abaixo são sugestões de captura para enriquecer o portfólio. Eles funcionam como placeholders documentados até que as imagens sejam adicionadas.
+As imagens abaixo já podem ser usadas como evidências do laboratório no portfólio e na documentação do projeto.
 
 | Print sugerido | Nome do arquivo | Onde inserir | O que comprova |
 | --- | --- | --- | --- |
@@ -374,6 +376,10 @@ Os itens abaixo são sugestões de captura para enriquecer o portfólio. Eles fu
 | Workflow de diagnóstico | `docs/images/diagnostics-workflow.png` | Seção `Diagnóstico seguro` | Coleta segura de informações do runner |
 | Build Docker no self-hosted | `docs/images/docker-build-self-hosted.png` | Seção `Docker no self-hosted runner` | Uso do Docker do host pelo workflow |
 | Badges do README | `docs/images/readme-badges.png` | Topo do README ou seção de evidências | Estado visual dos workflows |
+
+Registro das badges do README:
+
+![Badges do README](docs/images/readme-badges.png)
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -448,7 +454,7 @@ Mais detalhes:
 <a id="proximos-passos"></a>
 ## 🗺️ Próximos passos
 
-- Adicionar os prints sugeridos.
+- Versionar os prints capturados no repositório.
 - Publicar mais artifacts de evidência.
 - Evoluir o workflow com cache e matrix.
 - Testar execução com labels mais específicas.
