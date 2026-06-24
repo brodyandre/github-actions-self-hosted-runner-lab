@@ -33,6 +33,7 @@ cd ~/actions-runner-lab
 - Não salve tokens em arquivos do repositório.
 - Prefira manter o runner fora da pasta do projeto.
 - Use labels consistentes para facilitar a leitura dos workflows.
+- O workflow do laboratório instala `Node 20` com `actions/setup-node`, reduzindo dependência de versão pré-instalada no host.
 
 ## Validação inicial
 

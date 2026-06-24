@@ -1,17 +1,19 @@
 SHELL := /bin/bash
+NODE20 := ./scripts/run-with-node20.sh
+START_APP := ./scripts/start-app.sh
 
 .PHONY: install start run test check diagnostics docker-build
 
 install:
-	npm install
+	$(NODE20) "if [ -f package-lock.json ]; then npm ci; else npm install; fi"
 
 start:
-	npm start
+	$(START_APP)
 
 run: start
 
 test:
-	npm test
+	$(NODE20) "npm test"
 
 check:
 	./scripts/check-project.sh

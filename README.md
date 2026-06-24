@@ -2,7 +2,9 @@
   <h1>GitHub Actions Self-Hosted Runner Lab</h1>
   <p>Laboratório em PT-BR para demonstrar GitHub Actions com GitHub-hosted runner e self-hosted runner no WSL2/Windows 11.</p>
   <p>
-    <img alt="GitHub-hosted placeholder" src="https://img.shields.io/badge/GitHub--hosted-placeholder-lightgrey?logo=githubactions" />
+    <a href="https://github.com/brodyandre/github-actions-self-hosted-runner-lab/actions/workflows/github-hosted-runner.yml">
+      <img alt="Workflow GitHub-hosted runner" src="https://github.com/brodyandre/github-actions-self-hosted-runner-lab/actions/workflows/github-hosted-runner.yml/badge.svg" />
+    </a>
     <img alt="Self-hosted placeholder" src="https://img.shields.io/badge/Self--hosted-placeholder-lightgrey?logo=githubactions" />
     <img alt="Diagnostics placeholder" src="https://img.shields.io/badge/Diagnostics-placeholder-lightgrey?logo=githubactions" />
     <img alt="Docker placeholder" src="https://img.shields.io/badge/Docker-placeholder-lightgrey?logo=docker" />
@@ -58,7 +60,7 @@ Demonstrar, de forma prática, os seguintes pontos:
 
 ```text
 GitHub Repository
-├── Workflow 1: github-hosted-check
+├── Workflow 1: github-hosted-runner
 │   └── Runner: ubuntu-latest
 ├── Workflow 2: self-hosted-check
 │   └── Runner: self-hosted (WSL2 / Windows 11)
@@ -99,10 +101,11 @@ Aplicação demonstrada
 ├── .github/
 │   └── workflows/
 │       ├── docker-self-hosted.yml
-│       ├── github-hosted-check.yml
+│       ├── github-hosted-runner.yml
 │       ├── safe-diagnostics.yml
 │       └── self-hosted-check.yml
 ├── .gitignore
+├── .nvmrc
 ├── .vscode/
 │   └── settings.json
 ├── Dockerfile
@@ -126,7 +129,9 @@ Aplicação demonstrada
 │   └── server.test.js
 └── scripts/
     ├── check-project.sh
+    ├── run-with-node20.sh
     └── safe-diagnostics.sh
+    └── start-app.sh
 ```
 
 [⬆️ Retornar ao índice](#indice)
@@ -137,17 +142,19 @@ Aplicação demonstrada
 Pré-requisito recomendado: `Node.js 20` ou superior.
 
 1. Copie `.env.example` para `.env` se quiser customizar porta, host ou nome da aplicação.
-2. Execute `make install`.
-3. Execute `make check` para validar estrutura, lint e testes.
-4. Inicie a aplicação com `npm start` ou `make start`.
+2. Use `nvm use` se você tiver `nvm` instalado.
+3. Execute `make install`.
+4. Execute `make check` para validar estrutura, lint e testes.
+5. Inicie a aplicação com `npm start` ou `make start`.
 5. Acesse os endpoints locais.
 
-A aplicação lê o arquivo `.env` automaticamente, sem dependências externas.
+A aplicação lê o arquivo `.env` automaticamente, sem dependências externas. Se o Node local estiver abaixo da versão esperada, os comandos `make install`, `make start` e `make test` usam Docker com `Node 20` como fallback.
 
 Comandos úteis:
 
 ```bash
 cp .env.example .env
+nvm use
 make install
 make check
 npm start
@@ -176,6 +183,7 @@ O script `make check` também executa:
 - Verificação de estrutura.
 - Lint por sintaxe com `node --check`.
 - Testes automatizados da API.
+- Fallback com Docker `node:20` quando o Node local estiver antigo.
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -203,7 +211,12 @@ Resumo esperado:
 <a id="github-hosted-runner"></a>
 ## GitHub-hosted runner
 
-O workflow [`github-hosted-check.yml`](.github/workflows/github-hosted-check.yml) valida a aplicação com verificação de estrutura, lint e testes usando `ubuntu-latest`. Ele é a referência mais simples para mostrar a execução padrão do GitHub Actions sem infraestrutura própria.
+O workflow [`github-hosted-runner.yml`](.github/workflows/github-hosted-runner.yml) demonstra a execução padrão do GitHub Actions em `ubuntu-latest`. Ele instala o projeto de forma compatível com ou sem `package-lock.json`, executa `npm test`, roda `npm run diagnostics`, gera um relatório em `artifacts/github-hosted-report.txt` e publica esse arquivo como artifact.
+
+Diferença prática para o self-hosted runner:
+
+- `GitHub-hosted`: ambiente efêmero, pronto para uso e mantido pelo GitHub.
+- `Self-hosted`: ambiente controlado por você, útil quando precisa de acesso local, Docker específico ou ferramentas próprias.
 
 Ponto preparado para print:
 
@@ -215,6 +228,13 @@ Ponto preparado para print:
 ## Self-hosted runner
 
 O workflow [`self-hosted-check.yml`](.github/workflows/self-hosted-check.yml) foi preparado para execução manual em um runner com labels `self-hosted`, `linux` e `x64`, executando a mesma validação da aplicação com estrutura, lint e testes. A configuração recomendada está documentada em [docs/setup-self-hosted-runner.md](docs/setup-self-hosted-runner.md).
+
+Para evitar divergência de versão entre máquinas, esse workflow também instala `Node 20` com `actions/setup-node`.
+
+Resumo da comparação:
+
+- `GitHub-hosted` é melhor para validação padrão, rapidez de setup e manutenção mínima.
+- `Self-hosted` é melhor para cenários com dependências locais, controle de infraestrutura e integração com recursos do host.
 
 Pontos preparados para print:
 

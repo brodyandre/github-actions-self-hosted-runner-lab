@@ -2,6 +2,7 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+NODE20_RUNNER="$PROJECT_ROOT/scripts/run-with-node20.sh"
 
 required_directories=(
   ".github/workflows"
@@ -25,6 +26,8 @@ required_files=(
   "app/server.js"
   "app/config.js"
   "test/server.test.js"
+  "scripts/run-with-node20.sh"
+  "scripts/start-app.sh"
   "scripts/safe-diagnostics.sh"
   "scripts/check-project.sh"
   "docs/setup-self-hosted-runner.md"
@@ -33,7 +36,7 @@ required_files=(
   "docs/troubleshooting.md"
   "docs/runner/labels.md"
   ".vscode/settings.json"
-  ".github/workflows/github-hosted-check.yml"
+  ".github/workflows/github-hosted-runner.yml"
   ".github/workflows/self-hosted-check.yml"
   ".github/workflows/safe-diagnostics.yml"
   ".github/workflows/docker-self-hosted.yml"
@@ -62,17 +65,7 @@ node --check "$PROJECT_ROOT/test/server.test.js" >/dev/null
   node -e "const config = require('./app/config'); if (!config.port || !config.appVersion) { process.exit(1); } console.log('Configuração carregada com sucesso na porta', config.port);"
 )
 
-node_major_version="$(node -p "process.versions.node.split('.')[0]")"
-
-if [[ "$node_major_version" -lt 20 ]]; then
-  printf "Node.js 20 ou superior é necessário para executar lint e testes. Versão atual: %s\n" "$(node -v)" >&2
-  exit 1
-fi
-
-(
-  cd "$PROJECT_ROOT"
-  npm run lint
-  npm test
-)
+"$NODE20_RUNNER" "npm run lint"
+"$NODE20_RUNNER" "npm test"
 
 printf "Validação concluída com sucesso.\n"

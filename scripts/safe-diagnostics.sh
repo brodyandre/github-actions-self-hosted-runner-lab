@@ -32,6 +32,7 @@ print_section "Ferramentas"
 print_tool_version node
 print_tool_version npm
 print_tool_version git
+printf "Node.js recomendado para o laboratório: 20.x ou superior\n"
 
 if command -v docker >/dev/null 2>&1; then
   docker --version

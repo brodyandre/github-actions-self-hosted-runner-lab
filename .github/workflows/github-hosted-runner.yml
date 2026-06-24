@@ -1,0 +1,79 @@
+name: github-hosted-runner
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-and-report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Preparar ambiente
+        run: |
+          echo "::group::Permissões de execução"
+          chmod +x scripts/*.sh
+          echo "::endgroup::"
+
+      - name: Instalar dependências
+        run: |
+          echo "::group::Instalação"
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+          echo "::endgroup::"
+
+      - name: Executar testes
+        run: |
+          echo "::group::Testes"
+          npm test
+          echo "::endgroup::"
+
+      - name: Executar diagnóstico
+        run: |
+          echo "::group::Diagnóstico"
+          npm run diagnostics
+          echo "::endgroup::"
+
+      - name: Gerar relatório
+        run: |
+          echo "::group::Relatório"
+          mkdir -p artifacts
+          {
+            echo "Workflow: github-hosted-runner"
+            echo "Runner: ubuntu-latest"
+            echo "Node: $(node -v)"
+            echo "NPM: $(npm -v)"
+            echo "Data UTC: $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+            echo "Repositório: $GITHUB_REPOSITORY"
+            echo "Ref: $GITHUB_REF"
+            echo "Commit: $GITHUB_SHA"
+            echo "Status: validação concluída com sucesso"
+          } > artifacts/github-hosted-report.txt
+          cat artifacts/github-hosted-report.txt
+          echo "::endgroup::"
+
+      - name: Upload do artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-hosted-report
+          path: artifacts/github-hosted-report.txt
+          if-no-files-found: error
