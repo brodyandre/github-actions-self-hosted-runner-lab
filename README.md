@@ -34,7 +34,6 @@
 - [🔐 Diagnóstico seguro](#diagnostico-seguro)
 - [🐳 Docker no self-hosted runner](#docker-no-self-hosted-runner)
 - [🖼️ Evidências visuais](#evidencias-visuais)
-- [📸 Como capturar prints](#como-capturar-prints)
 - [🧯 Troubleshooting](#troubleshooting)
 - [🔒 Cuidados de segurança](#cuidados-de-seguranca)
 - [💼 Habilidades demonstradas](#habilidades-demonstradas)
@@ -161,32 +160,6 @@ curl http://localhost:3000/build-info
 
 Observação:
 Se o Node local estiver abaixo da versão esperada, alguns comandos do projeto usam Docker com `Node 20` como fallback.
-
-[⬆️ Retornar ao índice](#indice)
-
-<a id="validacao-antes-do-push"></a>
-## 🧪 Validação antes do push
-
-Antes de enviar mudanças para o GitHub, rode:
-
-```bash
-make check
-```
-
-Esse comando valida:
-
-- presença dos arquivos principais do projeto;
-- presença dos workflows centrais do laboratório;
-- presença da documentação obrigatória;
-- execução de `npm test` com sucesso.
-
-Se quiser validar também a imagem Docker local:
-
-```bash
-make docker-build
-```
-
-Essa checagem é local, não exige `self-hosted runner` online e não executa workflows remotos.
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -382,27 +355,6 @@ Registro das badges do README:
 
 [⬆️ Retornar ao índice](#indice)
 
-<a id="como-capturar-prints"></a>
-## 📸 Como capturar prints
-
-Para deixar o README mais completo, você pode capturar:
-
-1. A tela `Settings > Actions > Runners` com o runner `Online`.
-2. A execução do workflow `github-hosted-runner`.
-3. A execução do workflow `self-hosted-runner`.
-4. O artifact gerado pelo workflow `self-hosted-diagnostics`.
-5. O build Docker e o teste de `/health` no workflow `docker-self-hosted`.
-6. As badges do topo do README após as execuções.
-
-Orientação prática:
-
-- salve as imagens em `docs/images/`;
-- use exatamente os nomes sugeridos na tabela de evidências;
-- insira cada imagem na seção correspondente quando os arquivos existirem;
-- revise prints para garantir que não exibam tokens, secrets ou dados sensíveis.
-
-[⬆️ Retornar ao índice](#indice)
-
 <a id="troubleshooting"></a>
 ## 🧯 Troubleshooting
 
@@ -453,7 +405,6 @@ Mais detalhes:
 <a id="proximos-passos"></a>
 ## 🗺️ Próximos passos
 
-- Versionar os prints capturados no repositório.
 - Publicar mais artifacts de evidência.
 - Evoluir o workflow com cache e matrix.
 - Testar execução com labels mais específicas.
