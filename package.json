@@ -1,0 +1,15 @@
+{
+  "name": "github-actions-self-hosted-runner-lab",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Laboratório simples para GitHub Actions com runners GitHub-hosted e self-hosted.",
+  "main": "app/server.js",
+  "scripts": {
+    "start": "node app/server.js",
+    "check": "./scripts/check-project.sh",
+    "diagnostics": "./scripts/safe-diagnostics.sh"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

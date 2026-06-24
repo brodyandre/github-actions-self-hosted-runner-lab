@@ -1,0 +1,24 @@
+name: docker-self-hosted
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  docker-build:
+    runs-on:
+      - self-hosted
+      - linux
+      - x64
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verificar Docker
+        run: docker --version
+
+      - name: Build da imagem
+        run: docker build -t github-actions-self-hosted-runner-lab:local .
