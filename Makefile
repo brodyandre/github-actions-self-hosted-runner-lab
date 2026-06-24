@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: install start run check diagnostics docker-build
+.PHONY: install start run test check diagnostics docker-build
 
 install:
 	npm install
@@ -9,6 +9,9 @@ start:
 	npm start
 
 run: start
+
+test:
+	npm test
 
 check:
 	./scripts/check-project.sh

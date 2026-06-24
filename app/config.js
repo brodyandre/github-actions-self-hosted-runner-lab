@@ -3,6 +3,7 @@ const path = require("path");
 
 const DEFAULT_PORT = 3000;
 const ENV_FILE_PATH = path.resolve(__dirname, "..", ".env");
+const PACKAGE_JSON_PATH = path.resolve(__dirname, "..", "package.json");
 
 function loadEnvFile(filePath) {
   if (!fs.existsSync(filePath)) {
@@ -46,9 +47,36 @@ function parsePort(value) {
   return DEFAULT_PORT;
 }
 
+function readPackageMetadata() {
+  try {
+    const fileContents = fs.readFileSync(PACKAGE_JSON_PATH, "utf8");
+    return JSON.parse(fileContents);
+  } catch (error) {
+    return {
+      name: "github-actions-self-hosted-runner-lab",
+      version: "0.1.0"
+    };
+  }
+}
+
+function parseBoolean(value) {
+  return ["1", "true", "yes", "on"].includes(String(value || "").toLowerCase());
+}
+
+function readRunnerName(value) {
+  const runnerName = String(value || "").trim();
+  return runnerName || undefined;
+}
+
+const packageMetadata = readPackageMetadata();
+
 module.exports = {
-  appName: process.env.APP_NAME || "github-actions-self-hosted-runner-lab",
+  appName: process.env.APP_NAME || packageMetadata.name || "github-actions-self-hosted-runner-lab",
+  appVersion: packageMetadata.version || "0.1.0",
+  ci: parseBoolean(process.env.CI),
+  githubActions: parseBoolean(process.env.GITHUB_ACTIONS),
   host: process.env.HOST || "0.0.0.0",
   nodeEnv: process.env.NODE_ENV || "development",
-  port: parsePort(process.env.PORT)
+  port: parsePort(process.env.PORT),
+  runnerName: readRunnerName(process.env.RUNNER_NAME)
 };

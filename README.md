@@ -18,6 +18,8 @@
 - [Stack utilizada](#stack-utilizada)
 - [Estrutura do projeto](#estrutura-do-projeto)
 - [Como rodar localmente](#como-rodar-localmente)
+- [Como executar testes](#como-executar-testes)
+- [Como validar endpoints](#como-validar-endpoints)
 - [GitHub-hosted runner](#github-hosted-runner)
 - [Self-hosted runner](#self-hosted-runner)
 - [Labels de runner](#labels-de-runner)
@@ -68,7 +70,9 @@ GitHub Repository
 Aplicação demonstrada
 └── Node.js HTTP Server
     ├── GET /
-    └── GET /health
+    ├── GET /health
+    ├── GET /runner-info
+    └── GET /build-info
 ```
 
 [⬆️ Retornar ao índice](#indice)
@@ -77,6 +81,8 @@ Aplicação demonstrada
 ## Stack utilizada
 
 - `Node.js` para a aplicação de exemplo.
+- `node:http` para a API HTTP nativa.
+- `node:test` para testes automatizados.
 - `GitHub Actions` para automação dos workflows.
 - `Bash` para scripts de validação e diagnóstico seguro.
 - `Docker` como etapa opcional no runner self-hosted.
@@ -116,6 +122,8 @@ Aplicação demonstrada
 │   ├── troubleshooting.md
 │   └── troubleshooting/
 ├── package.json
+├── test/
+│   └── server.test.js
 └── scripts/
     ├── check-project.sh
     └── safe-diagnostics.sh
@@ -126,10 +134,13 @@ Aplicação demonstrada
 <a id="como-rodar-localmente"></a>
 ## Como rodar localmente
 
+Pré-requisito recomendado: `Node.js 20` ou superior.
+
 1. Copie `.env.example` para `.env` se quiser customizar porta, host ou nome da aplicação.
-2. Execute `make check` para validar a estrutura do projeto.
-3. Inicie a aplicação com `npm start` ou `make start`.
-4. Acesse `http://localhost:3000/` e `http://localhost:3000/health`.
+2. Execute `make install`.
+3. Execute `make check` para validar estrutura, lint e testes.
+4. Inicie a aplicação com `npm start` ou `make start`.
+5. Acesse os endpoints locais.
 
 A aplicação lê o arquivo `.env` automaticamente, sem dependências externas.
 
@@ -137,17 +148,62 @@ Comandos úteis:
 
 ```bash
 cp .env.example .env
+make install
 make check
 npm start
+curl http://localhost:3000/
 curl http://localhost:3000/health
+curl http://localhost:3000/runner-info
+curl http://localhost:3000/build-info
 ```
+
+[⬆️ Retornar ao índice](#indice)
+
+<a id="como-executar-testes"></a>
+## Como executar testes
+
+Os testes usam `node:test`, sem framework adicional.
+
+Comandos:
+
+```bash
+npm test
+make test
+```
+
+O script `make check` também executa:
+
+- Verificação de estrutura.
+- Lint por sintaxe com `node --check`.
+- Testes automatizados da API.
+
+[⬆️ Retornar ao índice](#indice)
+
+<a id="como-validar-endpoints"></a>
+## Como validar endpoints
+
+Com a aplicação em execução, valide os endpoints abaixo:
+
+```bash
+curl http://localhost:3000/
+curl http://localhost:3000/health
+curl http://localhost:3000/runner-info
+curl http://localhost:3000/build-info
+```
+
+Resumo esperado:
+
+- `GET /`: retorna `appName` e `status`.
+- `GET /health`: retorna `status: ok`.
+- `GET /runner-info`: retorna informações seguras do ambiente do runner.
+- `GET /build-info`: retorna nome da aplicação, versão e ambiente.
 
 [⬆️ Retornar ao índice](#indice)
 
 <a id="github-hosted-runner"></a>
 ## GitHub-hosted runner
 
-O workflow [`github-hosted-check.yml`](.github/workflows/github-hosted-check.yml) valida a estrutura do projeto usando `ubuntu-latest`. Ele é a referência mais simples para mostrar a execução padrão do GitHub Actions sem infraestrutura própria.
+O workflow [`github-hosted-check.yml`](.github/workflows/github-hosted-check.yml) valida a aplicação com verificação de estrutura, lint e testes usando `ubuntu-latest`. Ele é a referência mais simples para mostrar a execução padrão do GitHub Actions sem infraestrutura própria.
 
 Ponto preparado para print:
 
@@ -158,7 +214,7 @@ Ponto preparado para print:
 <a id="self-hosted-runner"></a>
 ## Self-hosted runner
 
-O workflow [`self-hosted-check.yml`](.github/workflows/self-hosted-check.yml) foi preparado para execução manual em um runner com labels `self-hosted`, `linux` e `x64`. A configuração recomendada está documentada em [docs/setup-self-hosted-runner.md](docs/setup-self-hosted-runner.md).
+O workflow [`self-hosted-check.yml`](.github/workflows/self-hosted-check.yml) foi preparado para execução manual em um runner com labels `self-hosted`, `linux` e `x64`, executando a mesma validação da aplicação com estrutura, lint e testes. A configuração recomendada está documentada em [docs/setup-self-hosted-runner.md](docs/setup-self-hosted-runner.md).
 
 Pontos preparados para print:
 

@@ -7,6 +7,7 @@ required_directories=(
   ".github/workflows"
   "app"
   "scripts"
+  "test"
   "docs/images"
   "docs/evidence"
   "docs/troubleshooting"
@@ -23,6 +24,7 @@ required_files=(
   "Dockerfile"
   "app/server.js"
   "app/config.js"
+  "test/server.test.js"
   "scripts/safe-diagnostics.sh"
   "scripts/check-project.sh"
   "docs/setup-self-hosted-runner.md"
@@ -53,10 +55,24 @@ done
 
 node --check "$PROJECT_ROOT/app/config.js" >/dev/null
 node --check "$PROJECT_ROOT/app/server.js" >/dev/null
+node --check "$PROJECT_ROOT/test/server.test.js" >/dev/null
 
 (
   cd "$PROJECT_ROOT"
-  node -e "const config = require('./app/config'); if (!config.port) { process.exit(1); } console.log('Configuração carregada com sucesso na porta', config.port);"
+  node -e "const config = require('./app/config'); if (!config.port || !config.appVersion) { process.exit(1); } console.log('Configuração carregada com sucesso na porta', config.port);"
+)
+
+node_major_version="$(node -p "process.versions.node.split('.')[0]")"
+
+if [[ "$node_major_version" -lt 20 ]]; then
+  printf "Node.js 20 ou superior é necessário para executar lint e testes. Versão atual: %s\n" "$(node -v)" >&2
+  exit 1
+fi
+
+(
+  cd "$PROJECT_ROOT"
+  npm run lint
+  npm test
 )
 
 printf "Validação concluída com sucesso.\n"

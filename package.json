@@ -6,10 +6,11 @@
   "main": "app/server.js",
   "scripts": {
     "start": "node app/server.js",
-    "check": "./scripts/check-project.sh",
+    "test": "node --test",
+    "lint": "node --check app/config.js && node --check app/server.js && node --check test/server.test.js",
     "diagnostics": "./scripts/safe-diagnostics.sh"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   }
 }
